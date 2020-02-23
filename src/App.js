@@ -39,7 +39,7 @@ const useGameState = () => {
   const [stars, setStars] = useState(utils.random(1, 9));
   const [avaliableNums, setAvailableNums] = useState(utils.range(1, 9));
   const [candidateNums, setCanidateNums] = useState([]);
-  const [secondsLeft, setSecondsLeft] = useState(10);
+  const [secondsLeft, setSecondsLeft] = useState(60);
 
   useEffect(() => {
     if (secondsLeft > 0 && avaliableNums.length > 0) {
