@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import './App.css';
 
-const PlayNumbers = () => (
-  <>
-    {utils.range(1, 9).map(number =>
-      <button
-        key={number}
-        className="number"
-        onClick={() => console.log('Num', number)}>
-        {number}
-      </button>)}
-  </>
+const PlayNumber = (props) => (
+  <button
+    className="number"
+    style={{ backgroundColor: colors[props.status] }}
+    onClick={() => console.log('Num', props.number)}>
+    {props.number}
+  </button>
 );
 
 const StarsDisplay = (props) => (
@@ -25,6 +22,21 @@ const StarsDisplay = (props) => (
 
 const StarMatch = () => {
   const [stars, setStars] = useState(utils.random(1, 9));
+  const [avaliableNums, setAvailableNumbs] = useState(utils.range(1, 9));
+  const [candidateNums, setCanidateNums] = useState([]);
+
+  const candidatesAreWrong = utils.sum(candidateNums) > stars;
+  const numberStatus = (number) => {
+    if(!avaliableNums.includes(number)){
+      return 'used';
+    }
+    if(candidateNums.includes(number)){
+      return candidatesAreWrong ? 'wrong' : 'candidate';
+    }
+
+    return 'available';
+  }
+
   return (
     <div className="game">
       <div className="help">
@@ -32,10 +44,15 @@ const StarMatch = () => {
       </div>
       <div className="body">
         <div className="left">
-          <StarsDisplay count={stars}/>
+          <StarsDisplay count={stars} />
         </div>
         <div className="right">
-          <PlayNumbers />
+          {avaliableNums.map(number =>
+            <PlayNumber
+              key={number}
+              status={numberStatus(number)}
+              number={number}
+            />)}
         </div>
       </div>
       <div className="timer">Time Remaining: 10</div>
